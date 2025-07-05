@@ -1,0 +1,37 @@
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #1e1e2f;
+  color: white;
+  font-family: "Courier New", monospace;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #00ffcc;
+}
+
+textarea,
+input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #2e2e3e;
+  color: #00ffcc;
+}
+
+button {
+  margin-right: 10px;
+  padding: 10px 20px;
+  background: #00ffcc;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+textarea:focus {
+  outline: 2px solid #00ffcc;
+  background-color: #1b1b2e;
+}

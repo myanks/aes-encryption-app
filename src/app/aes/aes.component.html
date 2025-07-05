@@ -1,0 +1,26 @@
+<div class="container">
+  <h2>AES Encryption/Decryption</h2>
+
+  <label>Plain Text:</label>
+  <textarea [(ngModel)]="plainText"></textarea>
+
+  <label>Secret Key:</label>
+  <input [(ngModel)]="secretKey" type="text" />
+
+  <button (click)="encrypt()">Encrypt</button>
+  <button (click)="decrypt()">Decrypt</button>
+  <br />
+  <label>Encrypted Text:</label>
+  <textarea
+    [value]="encryptedText"
+    (click)="copyText($event)"
+    readonly
+  ></textarea>
+
+  <label>Decrypted Text:</label>
+  <textarea
+    [value]="decryptedText"
+    (click)="copyText($event)"
+    readonly
+  ></textarea>
+</div>
