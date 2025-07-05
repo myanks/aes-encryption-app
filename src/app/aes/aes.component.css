@@ -35,3 +35,47 @@ textarea:focus {
   outline: 2px solid #00ffcc;
   background-color: #1b1b2e;
 }
+.textarea-wrapper {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.textarea-wrapper textarea {
+  width: 100%;
+  padding: 10px;
+  background-color: #2e2e3e;
+  color: #00ffcc;
+  border: none;
+  border-radius: 8px;
+  font-family: monospace;
+  cursor: pointer;
+  resize: none;
+}
+
+.textarea-wrapper.disabled textarea {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tooltip {
+  position: absolute;
+  top: -20px;
+  right: 10px;
+  background-color: #00ffcc;
+  color: black;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -11,6 +11,10 @@ export class AesComponent {
   secretKey = '';
   encryptedText = '';
   decryptedText = '';
+  showTooltip = {
+    encrypted: false,
+    decrypted: false,
+  };
 
   encrypt() {
     this.decryptedText = '';
@@ -31,10 +35,23 @@ export class AesComponent {
   }
   copyText(event: Event) {
     const textarea = event.target as HTMLTextAreaElement;
+    const value = textarea.value.trim();
+    if (!value) return;
+
     textarea.select();
     document.execCommand('copy');
 
-    // Optional: Visual feedback
-    alert('Copied to clipboard!');
+    const isEncrypted = textarea.value === this.encryptedText;
+    const isDecrypted = textarea.value === this.decryptedText;
+
+    if (isEncrypted) {
+      this.showTooltip.encrypted = true;
+      setTimeout(() => (this.showTooltip.encrypted = false), 1000);
+    }
+
+    if (isDecrypted) {
+      this.showTooltip.decrypted = true;
+      setTimeout(() => (this.showTooltip.decrypted = false), 1000);
+    }
   }
 }

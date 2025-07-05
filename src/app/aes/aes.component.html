@@ -11,16 +11,24 @@
   <button (click)="decrypt()">Decrypt</button>
   <br />
   <label>Encrypted Text:</label>
-  <textarea
-    [value]="encryptedText"
-    (click)="copyText($event)"
-    readonly
-  ></textarea>
+  <div class="textarea-wrapper" [class.disabled]="!encryptedText.trim()">
+    <textarea
+      [value]="encryptedText"
+      readonly
+      title="Click to copy"
+      (click)="copyText($event)"
+    ></textarea>
+    <span class="tooltip" *ngIf="showTooltip.encrypted">✔ Copied!</span>
+  </div>
 
   <label>Decrypted Text:</label>
-  <textarea
-    [value]="decryptedText"
-    (click)="copyText($event)"
-    readonly
-  ></textarea>
+  <div class="textarea-wrapper" [class.disabled]="!decryptedText.trim()">
+    <textarea
+      [value]="decryptedText"
+      readonly
+      title="Click to copy"
+      (click)="copyText($event)"
+    ></textarea>
+    <span class="tooltip" *ngIf="showTooltip.decrypted">✔ Copied!</span>
+  </div>
 </div>
