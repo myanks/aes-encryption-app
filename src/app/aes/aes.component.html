@@ -1,22 +1,33 @@
 <div class="container">
   <h2>AES Encryption/Decryption</h2>
 
-  <label>Plain Text:</label>
-  <textarea [(ngModel)]="plainText"></textarea>
+  <label>Input Text:</label>
+  <textarea
+    [ngModel]="inputText"
+    (ngModelChange)="onInputChange($event)"
+    placeholder="Text to encrypt, or an encrypted string to decrypt"
+  ></textarea>
 
   <label>Secret Key:</label>
-  <input [(ngModel)]="secretKey" type="text" />
+  <input
+    [ngModel]="secretKey"
+    (ngModelChange)="onKeyChange($event)"
+    type="text"
+  />
 
   <button (click)="encrypt()">Encrypt</button>
   <button (click)="decrypt()">Decrypt</button>
   <br />
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
   <label>Encrypted Text:</label>
   <div class="textarea-wrapper" [class.disabled]="!encryptedText.trim()">
     <textarea
       [value]="encryptedText"
       readonly
       title="Click to copy"
-      (click)="copyText($event)"
+      (click)="copyText('encrypted')"
     ></textarea>
     <span class="tooltip" *ngIf="showTooltip.encrypted">✔ Copied!</span>
   </div>
@@ -27,7 +38,7 @@
       [value]="decryptedText"
       readonly
       title="Click to copy"
-      (click)="copyText($event)"
+      (click)="copyText('decrypted')"
     ></textarea>
     <span class="tooltip" *ngIf="showTooltip.decrypted">✔ Copied!</span>
   </div>

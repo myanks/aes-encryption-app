@@ -1,16 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
+import { AesComponent } from './aes/aes.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterModule.forRoot([])
-      ],
-      declarations: [
-        AppComponent
-      ],
+      imports: [FormsModule],
+      declarations: [AppComponent, AesComponent],
     }).compileComponents();
   });
 
@@ -26,10 +24,12 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('aes-encryption-app');
   });
 
-  it('should render title', () => {
+  it('should render the AES tool', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, aes-encryption-app');
+    expect(compiled.querySelector('h2')?.textContent).toContain(
+      'AES Encryption/Decryption'
+    );
   });
 });

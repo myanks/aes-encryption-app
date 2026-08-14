@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
+
+type OutputField = 'encrypted' | 'decrypted';
+
 @Component({
   selector: 'app-aes',
   standalone: false,
@@ -7,51 +10,103 @@ import * as CryptoJS from 'crypto-js';
   styleUrl: './aes.component.css',
 })
 export class AesComponent {
-  plainText = '';
+  inputText = '';
   secretKey = '';
   encryptedText = '';
   decryptedText = '';
+  errorMessage = '';
   showTooltip = {
     encrypted: false,
     decrypted: false,
   };
 
+  onInputChange(value: string) {
+    this.inputText = value;
+    this.clearOutputs();
+  }
+
+  onKeyChange(value: string) {
+    this.secretKey = value;
+    this.clearOutputs();
+  }
+
   encrypt() {
-    this.decryptedText = '';
-    this.encryptedText = '';
-    if (!this.secretKey || !this.plainText) return;
+    this.clearOutputs();
+    if (!this.secretKey || !this.inputText) return;
     this.encryptedText = CryptoJS.AES.encrypt(
-      this.plainText,
+      this.inputText,
       this.secretKey
     ).toString();
   }
 
   decrypt() {
+    // Decrypt what we just produced, or the raw input when nothing has been
+    // encrypted yet (i.e. the user pasted an encrypted string in).
+    const cipherText = this.encryptedText || this.inputText;
     this.decryptedText = '';
-    this.encryptedText = '';
-    if (!this.secretKey || !this.plainText) return;
-    const bytes = CryptoJS.AES.decrypt(this.plainText, this.secretKey);
-    this.decryptedText = bytes.toString(CryptoJS.enc.Utf8);
-  }
-  copyText(event: Event) {
-    const textarea = event.target as HTMLTextAreaElement;
-    const value = textarea.value.trim();
-    if (!value) return;
+    this.errorMessage = '';
+    if (!this.secretKey || !cipherText) return;
 
-    textarea.select();
-    document.execCommand('copy');
-
-    const isEncrypted = textarea.value === this.encryptedText;
-    const isDecrypted = textarea.value === this.decryptedText;
-
-    if (isEncrypted) {
-      this.showTooltip.encrypted = true;
-      setTimeout(() => (this.showTooltip.encrypted = false), 1000);
+    let plain = '';
+    try {
+      plain = CryptoJS.AES.decrypt(cipherText, this.secretKey).toString(
+        CryptoJS.enc.Utf8
+      );
+    } catch {
+      // crypto-js throws "Malformed UTF-8 data" on a wrong key; other keys
+      // just yield an empty string, so both cases fall through to the error.
+      plain = '';
     }
 
-    if (isDecrypted) {
-      this.showTooltip.decrypted = true;
-      setTimeout(() => (this.showTooltip.decrypted = false), 1000);
+    if (!plain) {
+      this.errorMessage =
+        'Could not decrypt — check the secret key and the encrypted text.';
+      return;
+    }
+    this.decryptedText = plain;
+  }
+
+  async copyText(field: OutputField) {
+    const value = (
+      field === 'encrypted' ? this.encryptedText : this.decryptedText
+    ).trim();
+    if (!value) return;
+    if (!(await this.writeToClipboard(value))) return;
+
+    this.showTooltip[field] = true;
+    setTimeout(() => (this.showTooltip[field] = false), 1000);
+  }
+
+  private clearOutputs() {
+    this.encryptedText = '';
+    this.decryptedText = '';
+    this.errorMessage = '';
+  }
+
+  private async writeToClipboard(value: string): Promise<boolean> {
+    try {
+      await navigator.clipboard.writeText(value);
+      return true;
+    } catch {
+      // navigator.clipboard is unavailable outside a secure context (plain
+      // http), so fall back to the legacy path before giving up.
+      return this.legacyCopy(value);
+    }
+  }
+
+  private legacyCopy(value: string): boolean {
+    const scratch = document.createElement('textarea');
+    scratch.value = value;
+    scratch.style.position = 'fixed';
+    scratch.style.opacity = '0';
+    document.body.appendChild(scratch);
+    scratch.select();
+    try {
+      return document.execCommand('copy');
+    } catch {
+      return false;
+    } finally {
+      document.body.removeChild(scratch);
     }
   }
 }

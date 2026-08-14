@@ -31,6 +31,16 @@ button {
   cursor: pointer;
   margin-bottom: 10px;
 }
+.error {
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  background: #3a1f27;
+  color: #ff6b81;
+  border-left: 3px solid #ff6b81;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
 textarea:focus {
   outline: 2px solid #00ffcc;
   background-color: #1b1b2e;
