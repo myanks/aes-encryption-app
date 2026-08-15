@@ -1,6 +1,10 @@
 # AesEncryptionApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+A small Angular app for encrypting and decrypting text with AES, using
+[crypto-js](https://github.com/brix/crypto-js). Enter text and a secret key,
+hit Encrypt or Decrypt, and click either output box to copy its value.
+
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6, and has since been upgraded to Angular 21.
 
 ## Development server
 
