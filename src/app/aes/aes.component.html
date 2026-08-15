@@ -13,33 +13,39 @@
     [ngModel]="secretKey"
     (ngModelChange)="onKeyChange($event)"
     type="text"
-  />
+    />
 
-  <button (click)="encrypt()">Encrypt</button>
-  <button (click)="decrypt()">Decrypt</button>
-  <br />
+    <button (click)="encrypt()">Encrypt</button>
+    <button (click)="decrypt()">Decrypt</button>
+    <br />
 
-  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
 
-  <label>Encrypted Text:</label>
-  <div class="textarea-wrapper" [class.disabled]="!encryptedText.trim()">
-    <textarea
-      [value]="encryptedText"
-      readonly
-      title="Click to copy"
-      (click)="copyText('encrypted')"
-    ></textarea>
-    <span class="tooltip" *ngIf="showTooltip.encrypted">✔ Copied!</span>
+    <label>Encrypted Text:</label>
+    <div class="textarea-wrapper" [class.disabled]="!encryptedText.trim()">
+      <textarea
+        [value]="encryptedText"
+        readonly
+        title="Click to copy"
+        (click)="copyText('encrypted')"
+      ></textarea>
+      @if (showTooltip.encrypted) {
+        <span class="tooltip">✔ Copied!</span>
+      }
+    </div>
+
+    <label>Decrypted Text:</label>
+    <div class="textarea-wrapper" [class.disabled]="!decryptedText.trim()">
+      <textarea
+        [value]="decryptedText"
+        readonly
+        title="Click to copy"
+        (click)="copyText('decrypted')"
+      ></textarea>
+      @if (showTooltip.decrypted) {
+        <span class="tooltip">✔ Copied!</span>
+      }
+    </div>
   </div>
-
-  <label>Decrypted Text:</label>
-  <div class="textarea-wrapper" [class.disabled]="!decryptedText.trim()">
-    <textarea
-      [value]="decryptedText"
-      readonly
-      title="Click to copy"
-      (click)="copyText('decrypted')"
-    ></textarea>
-    <span class="tooltip" *ngIf="showTooltip.decrypted">✔ Copied!</span>
-  </div>
-</div>
